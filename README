@@ -1,0 +1,62 @@
+JavaScript library to generate recurring dates.
+
+For example:
+
+Every 2 weeks on Monday, Wednesday, and Friday for 5 occurrences starting today
+Every month on the last Sunday until 03/30/10 starting on 02/10/09
+
+This library will generate a list of dates for those patterns.
+
+REQUIREMENTS
+
+Datejs - http://www.datejs.com/
+    Distributed with this is the SVN version from 03/29/2010. Please visit their site also.
+Prototype - http://www.prototypejs.org/ (though this library can be easily modified to use other js frameworks)
+
+
+USAGE
+
+var r = new Recurrence(pattern);
+alert(r.describe());
+dates = r.generate();
+
+
+API
+
+Class Recurrence (pattern [, date_format])
+
+where pattern is a JSON object with the following options:
+
+- start: start date. date. required.
+- every: interval magnitude (every XXX weeks...). integer. required.
+- unit: valid values are 'd', 'w', 'm', 'y' for days, weeks, months, and years respectively. probably required.
+- end_condition: how should the recurrence be terminated. valid values are 'until' and 'for'. until should be a date. for should be an integer (for N occurrences). required.
+- until: if end_condition is 'until', pass the date here.
+- rfor: if end_condition is 'for', pass an integer here.
+- nth: valid values are 'first', 'second', 'third', 'forth', and 'last'. see 'occurrence_of' option. to be used with 'm' unit option.
+- occurrence_of: valid values are 0-6, corresponding to the days of the week. in conjuction with 'nth' option, specifies nth day of the month (last Sunday of the month). to be used with 'm' unit option.
+- days: to be used with 'w' unit option. an array of integers representing day of the week (0-6). eg. Every 2 weeks on Tuesday (2) and Thursday (4), pass [2,4] as the value.
+
+date_format is optional, please see Datejs for valid formats.
+
+-----
+
+String describe ()
+
+Tries to describe the supplied pattern in English.
+
+-----
+
+Date[] generate ([limit])
+
+Generate the dates based on supplied pattern. Returns array of Date objects. Optional argument limit puts an upper limit on how many dates to generate (for preview or to prevent some memory leak).
+
+-----
+
+COMMENTS
+
+Please feel free fork and improve, submit bug reports, suggestions, comments. email: janechii AT gmail.
+
+LICENSE
+
+Released under MIT License.
