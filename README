@@ -37,6 +37,11 @@ where pattern is a JSON object with the following options:
 - occurrence_of: valid values are 0-6, corresponding to the days of the week. in conjuction with 'nth' option, specifies nth day of the month (last Sunday of the month). to be used with 'm' unit option.
 - days: to be used with 'w' unit option. an array of integers representing day of the week (0-6). eg. Every 2 weeks on Tuesday (2) and Thursday (4), pass [2,4] as the value.
 
+ex. 
+{ start: Date.today(), every: 2, unit: 'w', end_condition: 'for', rfor: 5, days: [1,3,5] }
+generates:
+Every 2 weeks on Monday, Wednesday, and Friday for 5 occurrences starting today
+
 date_format is optional, please see Datejs for valid formats.
 
 -----
