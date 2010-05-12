@@ -23,7 +23,7 @@
 var Recurrence = Class.create({
   // takes a JSON object with pattern options
   initialize: function (pattern, date_format) {
-    if (typeof pattern != 'object') throw new TypeError('pattern must be a JSON object');
+    if (typeof pattern != 'object') throw new TypeError('pattern must be a JSON');
 
     if (!pattern.every || pattern.every.blank()) {
       throw new ReferenceError('Every magnitude must be specified');
@@ -32,6 +32,9 @@ var Recurrence = Class.create({
     if (isNaN(parseInt(pattern.every))) {
       throw new TypeError('Every magnitude must be a valide number');
     }
+
+    // stores generated dates based on recurrence pattern
+    this.dates = [];
 
     this.start = Date.parse(pattern.start);
     this.every = parseInt(pattern.every);
@@ -60,8 +63,10 @@ var Recurrence = Class.create({
       }
       t.push('on ' + d.join(', '));
     } else if (this.unit == 'm') {
-      t.push('on the ' + nthword[(this.nth < 0) ? nthword.length : this.nth] + ' ' + week[this.occurrence_of]);
+      t.push('on the ' + nthword[(this.nth < 0) ? nthword.length-1 : this.nth] + ' ' + week[this.occurrence_of]);
     }
+
+    t.push('starting on ' + this.start.toString(this.date_format));
 
     if (this.end_condition == 'until') {
       t.push('until ' + this.until.toString(this.date_format));
@@ -69,8 +74,20 @@ var Recurrence = Class.create({
       t.push('for ' + this.rfor + ' occurrences');
     }
 
-    t.push('starting on ' + this.start.toString(this.date_format));
     return t.join(' ');
+  },
+
+  // determine whether given date is in recurrence
+  contains: function (d) {
+    if (this.dates.length == 0) this.generate();
+
+    // can be string or date object already
+    d = Date.parse(d);
+
+    for (var i = 0; i < this.dates.length; i++) {
+      if (Date.equals(this.dates[i], d)) return true;
+    }
+    return false;
   },
 
   // returns an array of dates base on input pattern
@@ -82,7 +99,7 @@ var Recurrence = Class.create({
     var end_condition_reached = function (occurrences, current_date) {
       if (max && occurrences.length >= max) return true;
       if (this.end_condition == 'for' && this.rfor && occurrences.length >= this.rfor) return true;
-      if (this.end_condition == 'until' && this.until && current_date >= this.until) return true;
+      if (this.end_condition == 'until' && this.until && current_date > this.until) return true;
       return false;
     }.bind(this);
 
@@ -104,10 +121,10 @@ var Recurrence = Class.create({
       while (!end_condition_reached(dates, curr)) {
         // scan through the checked days
         this.days.each(function (d) {
-          if (end_condition_reached(dates, curr)) return;
-
           if (curr.getDay() < d) curr.moveToDayOfWeek(d);
+
           if (curr <= this.start) return;
+          if (end_condition_reached(dates, curr)) return;
 
           dates.push(curr.clone());
         }.bind(this));
@@ -126,7 +143,6 @@ var Recurrence = Class.create({
           curr.moveToNthOccurrence(this.occurrence_of, this.nth);
         }
 
-        // FIXME: breaking at the wrong time for until end conditoin
         if (end_condition_reached(dates, curr)) break;
 
         if (curr > this.start) {
@@ -148,7 +164,9 @@ var Recurrence = Class.create({
         dates.push(curr.clone());
       }
     }
-    
-    return dates;
+   
+    // cache results
+    this.dates = dates;
+    return this.dates;
   }
 });

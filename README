@@ -2,8 +2,8 @@ JavaScript library to generate recurring dates.
 
 For example:
 
-Every 2 weeks on Monday, Wednesday, and Friday for 5 occurrences starting today
-Every month on the last Sunday until 03/30/10 starting on 02/10/09
+Every 2 weeks on Monday, Wednesday, and Friday starting today for 5 occurrences
+Every month on the last Sunday starting on 02/10/09 until 03/30/10
 
 This library will generate a list of dates for those patterns.
 
@@ -19,7 +19,7 @@ USAGE
 var r = new Recurrence(pattern);
 alert(r.describe());
 dates = r.generate();
-
+if (r.contains('03/28/10')) alert('in pattern!');
 
 API
 
@@ -49,6 +49,14 @@ date_format is optional, please see Datejs for valid formats.
 String describe ()
 
 Tries to describe the supplied pattern in English.
+
+-----
+
+Boolean contains (date)
+
+Determines whether "date" is in the recurrence pattern. This calls generate(), if it hasn't already been generated, otherwise, it will use the dates generated from the last time generate() was called. Returns true if "date" is in the pattern. "date" can be either a string or a Date object, but please make sure the time portion is all balls.
+
+Note that this only check if "date" is contained within the pattern's starting and ending points. Next version will support indefinite ending date and throwaway dates generation, instead of storing them all in an array.
 
 -----
 
