@@ -153,13 +153,15 @@ var Recurrence = Class.create({
       }
 
     } else {
-      while (!end_condition_reached(dates, curr)) {
+      while (true) {
         if (this.unit == 'd') {
           curr.addDays(this.every);
         } else if (this.unit == 'y') {
           curr.addYears(this.every);
         }
         // else infinite loop yay
+
+        if (end_condition_reached(dates, curr)) break;
 
         dates.push(curr.clone());
       }
