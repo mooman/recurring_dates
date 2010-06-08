@@ -1,4 +1,5 @@
 JavaScript library to generate recurring dates.
+===============================================
 
 For example:
 
@@ -7,7 +8,9 @@ Every month on the last Sunday starting on 02/10/09 until 03/30/10
 
 This library will generate a list of dates for those patterns.
 
+
 REQUIREMENTS
+------------
 
 Datejs - http://www.datejs.com/
     Distributed with this is the SVN version from 03/29/2010. Please visit their site also.
@@ -15,15 +18,18 @@ Prototype - http://www.prototypejs.org/ (though this library can be easily modif
 
 
 USAGE
+-----
 
-var r = new Recurrence(pattern);
-alert(r.describe());
-dates = r.generate();
-if (r.contains('03/28/10')) alert('in pattern!');
+    var r = new Recurrence(pattern);
+    alert(r.describe());
+    dates = r.generate();
+    if (r.contains('03/28/10')) alert('in pattern!');
+
 
 API
+---
 
-Class Recurrence (pattern [, date_format])
+    Class Recurrence (pattern [, date_format])
 
 where pattern is a JSON object with the following options:
 
@@ -38,21 +44,21 @@ where pattern is a JSON object with the following options:
 - days: to be used with 'w' unit option. an array of integers representing day of the week (0-6). eg. Every 2 weeks on Tuesday (2) and Thursday (4), pass [2,4] as the value.
 
 ex. 
-{ start: Date.today(), every: 2, unit: 'w', end_condition: 'for', rfor: 5, days: [1,3,5] }
-generates:
-Every 2 weeks on Monday, Wednesday, and Friday for 5 occurrences starting today
+    { start: Date.today(), every: 2, unit: 'w', end_condition: 'for', rfor: 5, days: [1,3,5] }
+    generates:
+    Every 2 weeks on Monday, Wednesday, and Friday for 5 occurrences starting today
 
 date_format is optional, please see Datejs for valid formats.
 
 -----
 
-String describe ()
+    String describe ()
 
 Tries to describe the supplied pattern in English.
 
 -----
 
-Boolean contains (date)
+    Boolean contains (date)
 
 Determines whether "date" is in the recurrence pattern. This calls generate(), if it hasn't already been generated, otherwise, it will use the dates generated from the last time generate() was called. Returns true if "date" is in the pattern. "date" can be either a string or a Date object, but please make sure the time portion is all balls.
 
@@ -60,16 +66,18 @@ Note that this only check if "date" is contained within the pattern's starting a
 
 -----
 
-Date[] generate ([limit])
+    Date[] generate ([limit])
 
 Generate the dates based on supplied pattern. Returns array of Date objects. Optional argument limit puts an upper limit on how many dates to generate (for preview or to prevent some memory leak).
 
------
 
 COMMENTS
+--------
 
 Please feel free fork and improve, submit bug reports, suggestions, comments. email: janechii AT gmail.
 
+
 LICENSE
+-------
 
 Released under MIT License.

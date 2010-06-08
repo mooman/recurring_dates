@@ -30,7 +30,7 @@ var Recurrence = Class.create({
     }
 
     if (isNaN(parseInt(pattern.every))) {
-      throw new TypeError('Every magnitude must be a valide number');
+      throw new TypeError('Every magnitude must be a valid number');
     }
 
     // stores generated dates based on recurrence pattern
@@ -51,11 +51,19 @@ var Recurrence = Class.create({
 
   // tries to describe the pattern in plain english
   describe: function () {
-    var units = {'d': 'day(s)', 'w': 'week(s)', 'm': 'month(s)', 'y': 'year(s)'};
+    var units = {'d': 'day', 'w': 'week', 'm': 'month', 'y': 'year'};
     var week = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
     var nthword = ['', 'first', 'second', 'third', 'forth', 'fifth', 'last']
 
-    var t = ['Every ' + this.every + ' ' + units[this.unit]];
+    var t = ['Every'];
+    if (this.every > 2) {
+      t.push(this.every + ' ' + units[this.unit] + 's');
+    } else if (this.every == 2) {
+      t.push('other ' + units[this.unit]);
+    } else {
+      t.push(units[this.unit]);
+    }
+
     if (this.unit == 'w') {
       var d = [];
       for (var i = 0; i < this.days.length; i++) {
