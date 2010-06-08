@@ -31,6 +31,58 @@
     .footer { text-align:center; padding-top:30px; font-style: italic; }
 	</style>
 	
+    <script type='text/javascript' src='http://ajax.googleapis.com/ajax/libs/prototype/1.6.1.0/prototype.js'></script>
+    <script type='text/javascript' src='http://github.com/mooman/recurring_dates/raw/master/date.js'></script>
+    <script type='text/javascript' src='http://github.com/mooman/recurring_dates/raw/master/recurrence.js'></script>
+
+    <script type='text/javascript'>
+      function generate_recurrence () {
+        var pattern = {};
+
+        // gather pattern
+        ['start', 'every', 'unit', 'end_condition', 'until', 'rfor', 'nth', 'occurrence_of'].each(function(k) {
+          pattern[k] = $(k).value;
+        });
+
+        // gather selected days
+        pattern.days = $$('input.week_days').collect(function(d) {
+          if (d.checked) return d.value;
+          return null;
+        }).compact();
+
+        console.log(pattern);
+
+        try {
+          var r = new Recurrence(pattern);
+          var dates = r.generate((this.value == '') ? undefined : this.value);
+        } catch (e) {
+          $('output').value = e.message;
+          return;
+        }
+
+        $('output').value = "long:\n" + r.describe() + "\n\n";
+        $('output').value += "short:\n" + r.describe() + "\n\n";
+
+        $('output').value += dates.collect(function(d) { 
+          return d.toString('ddd MM/dd/yyyy'); 
+        }).join("\n");
+      }
+
+      document.observe('dom:loaded', function ( ) {
+        $('end_condition').observe('change', function () {
+          $$('#for_span, #until_span').invoke('hide');
+          $(this.value + '_span').show();
+        });
+
+        $('unit').observe('change', function () {
+          $$('#week_span, #month_span').invoke('hide');
+          if (this.value == 'w') $('week_span').show();
+          if (this.value == 'm') $('month_span').show();
+        });
+        
+        $$('button').invoke('observe', 'click', generate_recurrence);
+      });
+    </script>
 </head>
 
 <body>
@@ -54,9 +106,73 @@
 
     <h2>Authors</h2>
 <p>mooman (janechii@gmail.com)<br/><br/>      </p>
-<h2>Contact</h2>
-<p> (janechii@gmail.com)<br/>      </p>
+<h2>Demo</h2>
+<p>
+  <p>
+  <a href="http://mooman.github.com/recurring_dates/demo.html">Demo</a>
+  </p>
 
+    Every <input id='every' type='text' value='2' size='2' />
+    <select id='unit'>
+      <option value='d'>day(s)</option>
+      <option value='w'>week(s)</option>
+      <option value='m'>month(s)</option>
+      <option value='y'>year(s)</option>
+    </select>
+    <span id='month_span' style='display:none'>
+      on the
+      <select id='nth'>
+        <option value='1'>first</option>
+        <option value='2'>second</option>
+        <option value='3'>third</option>
+        <option value='4'>forth</option>
+        <option value='-1'>last</option>
+      </select>
+      <select id='occurrence_of'>
+        <option value="0">Sunday</option>
+        <option value="1">Monday</option>
+        <option value="2">Tuesday</option>
+        <option value="3">Wednesday</option>
+        <option value="4">Thursday</option>
+        <option value="5">Friday</option>
+        <option value="6">Saturday</option>
+        <option value="-1">day</option></select>
+      </select>
+    </span>
+
+    <span id='week_span' style='display:none'>
+      on
+      <input class='week_days' type='checkbox' value='0'> Sun
+      <input class='week_days' type='checkbox' value='1'> Mon
+      <input class='week_days' type='checkbox' value='2'> Tue
+      <input class='week_days' type='checkbox' value='3'> Wed
+      <input class='week_days' type='checkbox' value='4'> Thu
+      <input class='week_days' type='checkbox' value='5'> Fri
+      <input class='week_days' type='checkbox' value='6'> Sat
+    </span>
+
+    <br/>
+
+    from <input id='start' type='text' value='06/08/10' />
+    <select id='end_condition'><option>for</option><option>until</option></select>
+    <span id='for_span'>for <input id='rfor' type='text' value='10' /> occurences</span>
+    <span id='until_span' style='display:none'>until <input id='until' type='text' value='12/1/10' /></span>
+    
+    <br/>
+
+    <button>Generate all</button>
+    <button value='10'>Generate sample (10)</button>
+
+    <p>
+      <textarea id='output' cols='60' rows='15'></textarea>
+    </p>
+
+</p>
+
+    <h2>Documentation</h2>
+    <p>
+      <a href="http://github.com/mooman/recurring_dates">see repository</a>
+    </p>
 
     <h2>Download</h2>
     <p>
