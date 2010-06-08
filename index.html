@@ -50,8 +50,6 @@
           return null;
         }).compact();
 
-        console.log(pattern);
-
         try {
           var r = new Recurrence(pattern);
           var dates = r.generate((this.value == '') ? undefined : this.value);
