@@ -2,8 +2,8 @@
   <head>
     <title>Recurring Date Demo</title>
     <script type='text/javascript' src='http://ajax.googleapis.com/ajax/libs/prototype/1.6.1.0/prototype.js'></script>
-    <script type='text/javascript' src='http://github.com/mooman/recurring_dates/raw/master/date.js'></script>
-    <script type='text/javascript' src='http://github.com/mooman/recurring_dates/raw/master/recurrence.js'></script>
+    <script type='text/javascript' src='date.js'></script>
+    <script type='text/javascript' src='recurrence.js'></script>
 
     <script type='text/javascript'>
       function generate_recurrence () {
@@ -31,7 +31,9 @@
         }
 
         $('output').value = "long:\n" + r.describe() + "\n\n";
-        $('output').value += "short:\n" + r.describe() + "\n\n";
+
+        // compact description. next version.
+        // $('output').value += "short:\n" + r.describe(true) + "\n\n";
 
         $('output').value += dates.collect(function(d) { 
           return d.toString('ddd MM/dd/yyyy'); 

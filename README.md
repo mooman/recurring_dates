@@ -13,7 +13,8 @@ REQUIREMENTS
 ------------
 
 Datejs - http://www.datejs.com/
-    Distributed with this is the SVN version from 03/29/2010. Please visit their site also.
+(Distributed with this is the SVN version from 03/29/2010. Please visit their site also.)
+
 Prototype - http://www.prototypejs.org/ (though this library can be easily modified to use other js frameworks)
 
 
