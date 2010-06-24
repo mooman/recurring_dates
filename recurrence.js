@@ -44,7 +44,7 @@ var Recurrence = Class.create({
     this.rfor = parseInt(pattern.rfor);
     this.occurrence_of = pattern.occurrence_of;
     this.nth = parseInt(pattern.nth);
-    this.days = pattern.days.sort();
+    this.days = (pattern.days) ? pattern.days.sort() : [];
 
     this.date_format = date_format || 'MM/dd/yyyy';
   },
@@ -57,9 +57,9 @@ var Recurrence = Class.create({
 
     var t = ['Every'];
     if (this.every > 2) {
-      t.push(this.every + ' ' + units[this.unit] + 's');
+      t.push(this.every, units[this.unit] + 's');
     } else if (this.every == 2) {
-      t.push('other ' + units[this.unit]);
+      t.push('other', units[this.unit]);
     } else {
       t.push(units[this.unit]);
     }
@@ -69,17 +69,17 @@ var Recurrence = Class.create({
       for (var i = 0; i < this.days.length; i++) {
         d.push(week[this.days[i]]);
       }
-      t.push('on ' + d.join(', '));
+      t.push('on', d.join(', '));
     } else if (this.unit == 'm') {
-      t.push('on the ' + nthword[(this.nth < 0) ? nthword.length-1 : this.nth] + ' ' + week[this.occurrence_of]);
+      t.push('on the', nthword[(this.nth < 0) ? nthword.length-1 : this.nth], week[this.occurrence_of]);
     }
 
-    t.push('starting on ' + this.start.toString(this.date_format));
+    t.push('starting on', this.start.toString(this.date_format));
 
     if (this.end_condition == 'until') {
-      t.push('until ' + this.until.toString(this.date_format));
+      t.push('until', this.until.toString(this.date_format));
     } else if (this.end_condition == 'for') {
-      t.push('for ' + this.rfor + ' occurrences');
+      t.push('for', this.rfor, 'occurrences');
     }
 
     return t.join(' ');
