@@ -52,7 +52,7 @@ var Recurrence = Class.create({
   // tries to describe the pattern in plain english
   describe: function () {
     var units = {'d': 'day', 'w': 'week', 'm': 'month', 'y': 'year'};
-    var week = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    var week = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'day'];
     var nthword = ['', 'first', 'second', 'third', 'forth', 'fifth', 'last']
 
     var t = ['Every'];
@@ -71,7 +71,11 @@ var Recurrence = Class.create({
       }
       t.push('on', d.join(', '));
     } else if (this.unit == 'm') {
-      t.push('on the', nthword[(this.nth < 0) ? nthword.length-1 : this.nth], week[this.occurrence_of]);
+      // check if it's a special word
+      day_idx = (this.occurrence_of < 0) ? week.length - 1 : this.occurrence_of;
+      nth_idx = (this.nth < 0) ? nthword.length-1 : this.nth;
+
+      t.push('on the', nthword[nth_idx], week[day_idx]);
     }
 
     t.push('starting on', this.start.toString(this.date_format));

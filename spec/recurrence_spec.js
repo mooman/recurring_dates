@@ -81,6 +81,7 @@ Screw.Unit(function () {
         test_dates(pattern, expected_dates);
       });
 
+      // definitely needs more work
       it('#describe', function () {
         var r = new Recurrence(base_pattern);
 
