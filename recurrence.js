@@ -53,7 +53,7 @@ var Recurrence = Class.create({
   describe: function () {
     var units = {'d': 'day', 'w': 'week', 'm': 'month', 'y': 'year'};
     var week = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'day'];
-    var nthword = ['', 'first', 'second', 'third', 'forth', 'fifth', 'last']
+    var nthword = ['', 'first', 'second', 'third', 'fourth', 'fifth', 'last']
 
     var t = ['Every'];
     if (this.every > 2) {
