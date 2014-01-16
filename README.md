@@ -47,7 +47,7 @@ where pattern is a JSON object with the following options:
   'for' should be an integer (for N occurrences). required.
 - until: if end_condition is 'until', pass the date here.
 - rfor: if end_condition is 'for', pass an integer here.
-- nth: valid values are 'first', 'second', 'third', 'forth', and 'last'. 
+- nth: valid values are 'first', 'second', 'third', 'fourth', and 'last'. 
   see 'occurrence_of' option. to be used with 'm' unit option.
 - occurrence_of: valid values are 0-6, corresponding to the days of the week. 
   in conjuction with 'nth' option, specifies nth day of the month 
